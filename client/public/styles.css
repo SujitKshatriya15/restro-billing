@@ -1,0 +1,663 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #000;
+  color: white;
+  overflow-x: hidden;
+}
+
+.orders {
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+  color: white;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  width: 100%;
+  height: 80px;
+  border-bottom: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: #000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.menu-icon {
+  color: white;
+  cursor: pointer;
+}
+
+.nav-left h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.order-btn {
+  padding: 12px 26px;
+  border: 3px solid white;
+  border-radius: 14px;
+  background: transparent;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.order-btn:hover {
+  background: white;
+  color: black;
+}
+
+/* =========================
+   CURRENT PAGE
+========================= */
+
+.cards-container {
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 40px;
+  padding: 60px;
+}
+
+.more-cards {
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 40px;
+  padding: 0 60px 60px;
+}
+
+.card {
+  height: 170px;
+  border: 4px solid white;
+  border-radius: 30px;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  background: #1c1c1c;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.divider {
+  width: 92%;
+  height: 2px;
+  background: white;
+  margin: 20px auto 60px;
+}
+
+/* =========================
+   ORDER PAGE LAYOUT
+========================= */
+
+.main-layout {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+}
+
+/* =========================
+   LEFT CATEGORY PANEL
+========================= */
+
+.categories {
+  width: 16%;
+  border-right: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.category {
+  min-height: 85px;
+  border-bottom: 2px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.category:hover {
+  background: white;
+  color: black;
+}
+
+.active-category {
+  background: white;
+  color: black;
+}
+
+/* =========================
+   FOOD SECTION
+========================= */
+
+.food-section {
+  width: 54%;
+  padding: 30px;
+  border-right: 2px solid white;
+  overflow-y: auto;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+/* =========================
+   FOOD CARD
+========================= */
+
+.food-card {
+  background: #111;
+  border: 2px solid white;
+  border-radius: 25px;
+  overflow: hidden;
+  transition: 0.3s ease;
+  cursor: pointer;
+  height: 130px;
+}
+
+.food-card:hover {
+  transform: translateY(-5px);
+  background: #1c1c1c;
+}
+
+.food-img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.food-content {
+  padding: 18px;
+  width : auto;
+  height: 90px;
+}
+
+.title-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-price h3 {
+  font-size: 20px;
+}
+
+.title-price span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.food-line {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  margin: 14px 0;
+}
+
+.food-para {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.add-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border: 2px solid white;
+  border-radius: 12px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.add-btn:hover {
+  background: white;
+  color: black;
+}
+
+/* =========================
+   BILL SECTION
+========================= */
+
+.bill-section {
+  width: 70%;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.bill-title {
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.bill-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bill-item {
+  padding: 16px;
+  border: 2px solid white;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+}
+
+.bill-total {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid white;
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 30px;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: white;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.checkout-btn:hover {
+  transform: scale(1.02);
+}
+
+
+/* =========================
+   BILL SECTION
+========================= */
+
+.bill-section {
+  width: 35%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bill-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* =========================
+   BILL TOP
+========================= */
+
+.bill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.bill-info {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.bill-name-transfer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.transfer-select,
+.bill-input,
+.description-input {
+  padding: 12px;
+  border: 2px solid white;
+  border-radius: 12px;
+  background: transparent;
+  color: white;
+  outline: none;
+}
+
+.transfer-select option {
+  background: black;
+}
+
+.bill-input::placeholder,
+.description-input::placeholder {
+  color: #aaa;
+}
+
+
+/* =========================
+DESCRIPTION
+========================= */
+
+.description-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.description-box label {
+  font-weight: bold;
+}
+
+.description-input {
+  min-height: 70px;
+  resize: none;
+}
+
+/* =========================
+   BILL TABLE
+========================= */
+
+.bill-table {
+  flex: 1;
+  border: 2px solid white;
+  border-radius: 14px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.bill-table-head {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-bottom: 1px solid white;
+  padding-bottom: 10px;
+}
+
+.bill-row {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+/* =========================
+   BILL BUTTONS
+========================= */
+
+.bill-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.bill-buttons button {
+  padding: 15px;
+  border: 2px solid white;
+  border-radius: 14px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.bill-buttons button:hover {
+  background: white;
+  color: black;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.food-modal {
+  width: 420px;
+  background: #111;
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.food-modal h2 {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.food-options {
+  display: flex;
+  gap: 15px;
+  margin: 25px 0;
+}
+.option-btn {
+  flex: 1;
+}
+.food-options button,
+.close-btn {
+  padding: 14px;
+  border: 2px solid white;
+  border-radius: 12px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.food-options button:hover,
+.close-btn:hover {
+  background: white;
+  color: black;
+}
+.option-btn {
+  padding: 14px;
+
+  border: 2px solid white;
+  border-radius: 12px;
+
+  background: transparent;
+  color: white;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.option-btn:hover {
+  background: white;
+  color: black;
+}
+
+.active-option {
+  background: black;
+  color: white;
+
+  transform: scale(1.1);
+
+  box-shadow:
+    0 0 22px rgba(37, 26, 26, 0.4);
+}
+
+.close-btn {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.quantity-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+
+}
+
+.quantity-box button {
+  width: 30px;
+  height: 30px;
+
+  border: 2px solid white;
+  border-radius: 10px;
+
+  background: transparent;
+  color: white;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.quantity-box button:hover {
+  background: white;
+  color: black;
+}
+
+.quantity-box span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+
+  .cards-container,
+  .more-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .main-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .categories,
+  .food-section,
+  .bill-section {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid white;
+  }
+
+  .categories {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .category {
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .nav-left h1 {
+    font-size: 18px;
+  }
+
+  .cards-container,
+  .more-cards {
+    grid-template-columns: 1fr;
+    padding: 30px 20px;
+  }
+
+  .food-section,
+  .bill-section {
+    padding: 20px;
+  }
+
+  .order-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}
+
+body {
+  filter : invert(1)
+}
