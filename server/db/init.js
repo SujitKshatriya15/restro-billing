@@ -33,7 +33,7 @@ try {
         extra_price INTEGER
     );
     CREATE TABLE IF NOT EXISTS tables(
-        table_number INTEGER PRIMARY KEY,
+        table_number VARCHAR(15) PRIMARY KEY,
         status TEXT,
         current_bill_id INTEGER REFERENCES bills(bill_id)
     );

@@ -10,7 +10,10 @@ function Order() {
   
   const [categories, setCategories] =
     useState([]);
-
+  const [tables, setTables] =
+  useState([]);
+  const [parcel, setParcel] =
+    useState(false);
   const [foods, setFoods] =
     useState([]);
     
@@ -54,9 +57,21 @@ function Order() {
 
     try {
 
+      const tablesRes =
+      await fetch(
+        "http://localhost:5000/tables"
+      );
+
+    const tablesData =
+      await tablesRes.json();
+
+    setTables(tablesData);
+
+
       // =====================
       // CATEGORIES
       // =====================
+
 
       const categoriesRes =
         await fetch(
@@ -326,7 +341,9 @@ const addFoodWithType = (
               body: JSON.stringify({
 
                 table_number:
-                  tableNumber,
+                  parcel
+                    ? null
+                    : tableNumber,
 
                 customer_name:
                   "",
@@ -334,7 +351,7 @@ const addFoodWithType = (
                 description:
                   "",
 
-                parcel: false,
+                parcel: parcel,
 
                 total_cost:
                   totalPrice,
@@ -536,35 +553,37 @@ const addFoodWithType = (
 
             <div className="bill-info">
 
-              <h3>
-                TABLE NO :
-                {" "}
-                {tableNumber}
-              </h3>
+  <h3>
+    TABLE NO :
+    {" "}
+    {tableNumber}
+  </h3>
 
-              <h3>
-                PARCEL : NO
-              </h3>
+  <div className="parcel-box">
 
-            </div>
+    <h3>
+      PARCEL :
+    </h3>
+
+    <select
+      className="transfer-select"
+    >
+
+      <option>
+        NO
+      </option>
+
+      <option>
+        YES
+      </option>
+
+    </select>
+
+  </div>
+
+</div>
 
             <div className="bill-name-transfer">
-
-              <select className="transfer-select">
-
-                <option>
-                  TRANSFER
-                </option>
-
-                <option>
-                  Table 2
-                </option>
-
-                <option>
-                  Table 3
-                </option>
-
-              </select>
 
               <input
                 type="text"

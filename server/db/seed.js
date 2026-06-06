@@ -63,12 +63,19 @@ try {
     db.prepare(`
             INSERT INTO tables
             (table_number, status)
-
             VALUES
-            (1, 'AVAILABLE'),
-            (2, 'AVAILABLE'),
-            (3, 'AVAILABLE'),
-            (4, 'AVAILABLE');
+            ('1', 'AVAILABLE'),
+            ('2', 'AVAILABLE'),
+            ('3', 'AVAILABLE'),
+            ('4', 'AVAILABLE'),
+            ('P1', 'AVAILABLE'),
+            ('P2', 'AVAILABLE'),
+            ('P3', 'AVAILABLE'),
+            ('P4', 'AVAILABLE'),
+            ('P5', 'AVAILABLE'),
+            ('P6', 'AVAILABLE'),
+            ('P7', 'AVAILABLE'),
+            ('P8', 'AVAILABLE');
         `).run()
         
         console.log("imported succesfully")

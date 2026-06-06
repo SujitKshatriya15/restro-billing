@@ -102,22 +102,26 @@ function Current() {
 
       {/* Top Cards */}
 
+      {/* TOP TABLES */}
+
       <div className="cards-container">
 
         {tables
+          .filter((table) =>
+            !table.table_number.startsWith("P")
+          )
           .slice(0, 4)
           .map((table) => (
 
             <div
 
-              key={
-                table.table_number
-              }
+              key={table.table_number}
+
               onClick={() =>
-                  openTable(
-                    table.table_number
-                  )
-                }
+                openTable(
+                  table.table_number
+                )
+              }
 
               className={`card ${
                 table.status ===
@@ -130,40 +134,40 @@ function Current() {
             >
 
               <h2>
-                {
-                  table.table_number
-                }
+                {table.table_number}
               </h2>
 
-              
             </div>
 
           ))}
 
       </div>
 
-      {/* Divider */}
+            {/* Divider */}
 
       <div className="divider"></div>
 
       {/* Bottom Cards */}
+      {/* PARCELS */}
 
       <div className="more-cards">
 
         {tables
-          .slice(4)
+          .filter((table) =>
+            table.table_number.startsWith("P")
+          )
+          .slice(0, 8)
           .map((table) => (
 
             <div
 
-              key={
-                table.table_number
-              }
+              key={table.table_number}
+
               onClick={() =>
-                  openTable(
-                    table.table_number
-                  )
-                }
+                openTable(
+                  table.table_number
+                )
+              }
 
               className={`card ${
                 table.status ===
@@ -176,10 +180,9 @@ function Current() {
             >
 
               <h2>
-                {
-                  table.table_number
-                }
+                {table.table_number}
               </h2>
+
             </div>
 
           ))}
