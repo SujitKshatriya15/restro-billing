@@ -584,6 +584,48 @@ app.get("/table-orders/:tableNumber", (req, res) => {
   }
 });
 
+app.get("/bills-history", (req,res)=>{
+  try{
+    const bills = db.prepare(`
+      SELECT * FROM bills
+      WHERE status = 'PAID'
+      `).all();
+    res.json(bills)
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message,
+    });
+  } 
+})
+app.get("/bill-details/:billId", (req,res)=>{
+  try{
+    const {billId} = req.params;
+    const billDetails = db.prepare(`
+      SELECT
+        b.*,
+        o.quantity,
+        o.unit_price,
+        o.total_price,
+        f.food_name,
+        fo.option_name
+      FROM bills b
+      JOIN orders o ON b.bill_id = o.bill_id
+      JOIN foods f ON o.food_id = f.food_id
+      LEFT JOIN food_options fo ON o.option_id = fo.option_id
+      WHERE b.bill_id = ?
+    `).all(billId);
+    res.json(billDetails);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err.message,
+    });
+  } 
+});
+
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });
