@@ -6,7 +6,7 @@ function Current() {
   const navigate = useNavigate();
 
   const [tables, setTables] = useState([]);
-
+  const [totalPrice, setTotalPrice] = useState({});
   const fetchTables = async () => {
     try {
       const response = await fetch(
@@ -22,13 +22,35 @@ function Current() {
       console.error("Error fetching tables:", err);
     }
   };
+  const fetchTableTotalPrice = async () => {
+    try {
+      const response = await fetch(
+        `https://restro-billing-yogurt-co.onrender.com/check-table-status`
+      );
+      const data = await response.json();
+      const priceMap = {};
 
+      data.forEach(item => {
+        priceMap[item.table_number] = item.total_cost;
+      });
+
+      setTotalPrice(priceMap);
+      
+      console.log("Total Price:", data);
+    } catch (err) {
+      console.error(
+        `Error fetching total price `,
+        err
+      );
+    }
+  }
   const openTable = (tableNumber) => {
     navigate(`/menu/${tableNumber}`);
   };
 
   useEffect(() => {
     fetchTables();
+    fetchTableTotalPrice();
   }, []);
 
   return (
@@ -77,7 +99,11 @@ function Current() {
                   : "occupied-card"
               }`}
             >
-              <h2>{table.table_number}</h2>
+              <h4>
+                {totalPrice[table.table_number] !== undefined
+                ? `₹${totalPrice[table.table_number]}`
+                : table.table_number}
+              </h4>
             </div>
           ))}
       </div>
@@ -110,7 +136,11 @@ function Current() {
                   : "occupied-card"
               }`}
             >
-              <h2>{table.table_number}</h2>
+              <h4>
+                {totalPrice[table.table_number] !== undefined
+                ? `₹${totalPrice[table.table_number]}`
+                : table.table_number}
+              </h4>
             </div>
           ))}
       </div>
