@@ -2,12 +2,15 @@ import express from "express";
 import Database from "better-sqlite3";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Client } from "pg";
+import { Pool } from "pg";
 
 dotenv.config();
 console.log(process.env.CONNECTION_STRING);
-const client = new Client({
+const client = new Pool({
   connectionString: process.env.CONNECTION_STRING,
+  ssl:{
+    rejectUnauthorized: false,
+  },
 });
 
 await client.connect();
