@@ -609,30 +609,20 @@ app.get("/bill-details/:billId", async (req, res) => {
 });
 
 
-app.get("/tables/:billId/total", async (req, res) => {
+app.get("/check-table-status", async (req, res) => {
   try {
-    const { billId } = req.params;
-  
-    if (billId === "null") {
-      return res.json({
-        total: 0,
-      });
-    }
 
+    let total = 0;
     const totalResult = await client.query(
       `
-        SELECT total_cost
-        FROM bills
-        WHERE bill_id = $1
-      `, [billId]
+      SELECT t.table_number, b.total_cost
+      FROM tables t
+      INNER JOIN bills b ON b.bill_id = t.current_bill_id
+      WHERE t.status = 'OCCUPIED';
+      `);
+    res.json(
+      totalResult.rows,
     );
-    let total = 0;
-    if(totalResult.rows[0]){
-      total = totalResult.rows[0].total_cost;
-    }    
-    res.json({
-      total,
-    });
   } catch (err) {
     console.log(err);
 
