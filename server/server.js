@@ -2,13 +2,15 @@ import express from "express";
 import Database from "better-sqlite3";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Client } from "pg";
+import { Pool } from "pg";
 
 dotenv.config();
-const client = new Client({
+const client = new Pool({
   connectionString: process.env.CONNECTION_STRING,
+  ssl:{
+    rejectUnauthorized: false,
+  },
 });
-
 await client.connect();
 
 const app = express();
@@ -484,6 +486,9 @@ app.get("/tables", async (req, res) => {
     const result = await client.query(
         `
         SELECT * FROM tables
+        ORDER BY
+          CASE WHEN table_number LIKE 'P%' THEN 1 ELSE 0 END,
+          CAST(REPLACE(table_number, 'P', '') AS INTEGER);
       `
       );
     const tables = result.rows;
