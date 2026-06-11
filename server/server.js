@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { Client } from "pg";
 
 dotenv.config();
+console.log(process.env.CONNECTION_STRING);
 const client = new Client({
   connectionString: process.env.CONNECTION_STRING,
 });
@@ -12,7 +13,7 @@ const client = new Client({
 await client.connect();
 
 const app = express();
-const db = new Database("db/cafe.db");
+// const db = new Database("db/cafe.db");
 const port = 5001;
 app.use(cors());
 app.use(express.json());
