@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import {useParams} from "react-router-dom";
 import BillItems from "./BillItems";
 import Modal from "./Modal"
+import FoodGrid from "./FoodGrid"
+import Navbar from "./Navbar";
 function Order() {
 
   // =========================
@@ -520,33 +522,7 @@ const addFoodWithType = (
           NAVBAR
       ===================== */}
 
-      <nav className="navbar">
-
-        <div className="nav-left">
-
-          <Menu
-            size={28}
-            className="menu-icon"
-          />
-
-          <h1>
-            THE MOMO HUB
-          </h1>
-
-        </div>
-
-        <button
-          className="order-btn"
-          onClick={() =>
-            navigate("/")
-          }
-        >
-
-          NEW ORDER
-
-        </button>
-
-      </nav>
+      <Navbar />
 
       {/* =====================
           MAIN LAYOUT
@@ -608,60 +584,10 @@ const addFoodWithType = (
           </h2>
 
           <div className="food-grid">
-
-            {filteredFoods.map(
-              (food) => (
-
-                <div
-                  className="food-card"
-
-                  key={
-                    food.food_id
-                  }
-
-                  onClick={() =>
-                    openFoodOptions(
-                      food
-                    )
-                  }
-                >
-
-                  <div className="food-content">
-
-                    <div className="title-price">
-
-                      <h3>
-                        {
-                          food.food_name
-                        }
-                      </h3>
-
-                      <span>
-
-                        ₹
-                        {food.price}
-
-                      </span>
-
-                    </div>
-
-                    <div className="food-line"></div>
-
-                    <p className="food-para">
-
-                      {
-                        food.food_description
-                      }
-
-                    </p>
-
-                  </div>
-
-                </div>
-
-              )
-            )}
-
+            <FoodGrid 
+              filteredFoods={filteredFoods}
+              openFoodOptions = {openFoodOptions}
+            />
           </div>
 
         </div>

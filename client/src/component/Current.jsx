@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 function Current() {
   const navigate = useNavigate();
@@ -69,30 +70,7 @@ function Current() {
     <div className="orders">
       {/* Navbar */}
 
-      <nav className="navbar">
-        <div className="nav-left">
-          <Menu
-            size={28}
-            className="menu-icon"
-            onClick={() => changeTheme()}
-          />
-
-          <h1>THE MOMO HUB</h1>
-        </div>
-
-        <button
-          className="order-btn"
-          onClick={() => navigate("/records")}
-        >
-          Bills History
-        </button>
-        <button
-          className="order-btn"
-          onClick={() => navigate("/")}
-        >
-          NEW ORDER
-        </button>
-      </nav>
+      <Navbar />
 
       {/* TOP TABLES */}
 
