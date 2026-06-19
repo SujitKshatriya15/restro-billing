@@ -6,7 +6,7 @@ function Records() {
   return (
     <div className="dashboard-layout">
       <div className="dashboard-left">
-        <Records />
+        <BillRecords />
       </div>
       <div className="dashboard-right">
         <ItemSoldDetails />
