@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown, ChevronRight, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function Records() {
+function BillRecords() {
   const [billData, setBillData] = useState([]);
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -182,4 +182,4 @@ function Records() {
   );
 }
 
-export default Records;
+export default BillRecords;

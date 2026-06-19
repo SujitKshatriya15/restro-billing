@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import BillItems from "./BillItems";
-import Modal from "./Modal";
-import FoodGrid from "./FoodGrid";
-import Navbar from "./Navbar";
+import BillItems from "../components/BillItems";
+import Modal from "../components/Modal";
+import FoodGrid from "../components/FoodGrid";
+import Navbar from "../components/Navbar";
 function Order() {
   // =========================
   // STATES

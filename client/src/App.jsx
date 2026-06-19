@@ -5,11 +5,11 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import Order from "./component/Order";
-import Home from "./component/Home";
-import Records from "./component/Records"
-import Login from "./component/Login"
-import ProtectedRoute from "./component/ProtectedRoute";
+import Order from "./pages/Order";
+import Home from "./pages/Home";
+import Records from "./pages/Records"
+import Login from "./pages/Login"
+import ProtectedRoute from "./components/ProtectedRoute";
 import { RouteOr } from "lucide-react";
 
 

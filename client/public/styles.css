@@ -1000,6 +1000,150 @@ body {
   margin-top: 14px;
 }
 
+/* =========================
+   DASHBOARD SPLIT LAYOUT
+========================= */
+
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.dashboard-left {
+  width: 55%;
+  border-right: 1.5px solid #333333;
+  overflow-y: auto;
+}
+
+.dashboard-right {
+  width: 45%;
+  overflow-y: auto;
+}
+
+/* =========================
+   ANALYSIS PANEL
+========================= */
+
+.analysis {
+  padding: 30px 40px;
+  width: 100%;
+}
+
+.analysis-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 25px;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid #333333;
+}
+
+.analysis-loading,
+.analysis-error,
+.analysis-empty {
+  text-align: center;
+  color: #777;
+  padding: 30px;
+}
+
+.analysis-error {
+  color: #b91c1c;
+}
+
+.analysis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.analysis-category {
+  background: #e8e8e8;
+  border: 1.5px solid #333333;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.analysis-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  background: #d8d8d8;
+  border-bottom: 1.5px solid #333333;
+}
+
+.analysis-category-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+.analysis-category-total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+.analysis-items {
+  padding: 8px 22px;
+}
+
+.analysis-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #cccccc;
+}
+
+.analysis-item-row:last-child {
+  border-bottom: none;
+}
+
+.analysis-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+}
+
+.analysis-item-option {
+  font-size: 12px;
+  color: #888;
+  margin-top: 3px;
+}
+
+.analysis-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.analysis-item-qty {
+  font-size: 12px;
+  color: #888;
+}
+
+.analysis-item-sold {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .dashboard-left,
+  .dashboard-right {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1.5px solid #333333;
+  }
+}
+
 
 /* =========================
    RESPONSIVE

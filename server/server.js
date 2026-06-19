@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Pool } from "pg";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -19,14 +19,13 @@ await client.connect();
 const app = express();
 // const db = new Database("db/cafe.db");
 const port = 5001;
-app.use(cors(
-  {
-  origin: "https://restro-billing-smoky.vercel.app",
-  credentials: true,
-}
-));
+app.use(
+  cors({
+    origin: "https://restro-billing-smoky.vercel.app",
+    credentials: true,
+  }),
+);
 app.use(express.json());
-
 
 function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -47,11 +46,13 @@ function requireAuth(req, res, next) {
   }
 }
 
-app.post("/login/auth", async (req,res) =>{
-  try{
-    const {username, password} = req.body
-    if(!username || !password){
-      return res.status(400).json({ message: "Username and password are required" });
+app.post("/login/auth", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Username and password are required" });
     }
 
     const result = await client.query(
@@ -59,21 +60,25 @@ app.post("/login/auth", async (req,res) =>{
       SELECT username, password_hash
       FROM accounts
       WHERE username = $1
-      `, [username]
+      `,
+      [username],
     );
-    if(result.rows[0] === undefined  || result.rows[0] === 0){
-     return res.status(400).json({message: "Invalid username or password"});
+    if (result.rows[0] === undefined || result.rows[0] === 0) {
+      return res.status(400).json({ message: "Invalid username or password" });
     }
     const account = result.rows[0];
-    const passwordMatchs = await bcrypt.compare(password,account.password_hash)
-    console.log("ok")
-    if(!passwordMatchs){
-     return res.status(401).json({ message: "Invalid username or password" });
+    const passwordMatchs = await bcrypt.compare(
+      password,
+      account.password_hash,
+    );
+    console.log("ok");
+    if (!passwordMatchs) {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
     const token = jwt.sign(
       { id: account.id, username: account.username },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
     res.status(200).json({
       message: "Login successful",
@@ -83,13 +88,11 @@ app.post("/login/auth", async (req,res) =>{
         username: account.username,
       },
     });
-
-  } catch (err){
+  } catch (err) {
     console.log("login error: ", err);
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 app.get("/categories", async (req, res) => {
   const categories = await client.query(`
@@ -759,6 +762,75 @@ app.get("/bill-records", async (req, res) => {
     console.log("ERROR FETCHING BILL RECORDS: ", err);
   }
 });
+
+app.get("/items-analysis", async (req,res)=>{
+  try{
+
+  
+  const result = await client.query(
+    `
+    select
+      t.category_id,
+      t.category_name,
+      t.date,
+      json_agg(
+        json_build_object(
+          'food_id',
+          t.food_id,
+          'food_name',
+          t.food_name,
+          'option_id',
+          t.option_id,
+          'option_name',
+          t.option_name,
+          'quantity',
+          t.quantity,
+          'sold', t.price
+        )
+      ) as details
+    from
+      (
+        select
+          f.category_id as category_id,
+          c.category_name as category_name,
+          f.food_name as food_name,
+          fo.option_name as option_name,
+          fo.option_id as option_id,
+          f.food_id as food_id,
+          COUNT(*) as quantity,
+          SUM(o.total_price) as price,
+          DATE(created_at) as date
+        from
+          orders o
+          left join foods f on f.food_id = o.food_id
+          left join categories c on c.category_id = f.category_id
+          left join food_options fo on o.option_id = fo.option_id
+        group by
+          f.food_id,
+          f.category_id,
+          fo.option_id,
+          c.category_name,
+          date
+      ) t
+    group by
+      t.date,
+      t.category_id,
+      t.category_name
+    order by
+    t.date asc
+    `
+  )
+
+  const data = result.rows;
+  console.log(data);
+  res.json(data);
+  } catch (err){
+    console.log("Error fetching the data from DB: ", err )
+    res.status(404)
+  }
+})
+
+
 
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
