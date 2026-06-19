@@ -278,7 +278,7 @@ function Order() {
 
       console.log(data);
 
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -319,7 +319,7 @@ function Order() {
           })),
         );
       }
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

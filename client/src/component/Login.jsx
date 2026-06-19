@@ -34,7 +34,7 @@ function Login(){
         // TODO: handle successful login (e.g. store token, redirect, close modal)
         console.log("Login success:", data);
         localStorage.setItem("token", data.token);
-        navigate("/home");
+        navigate("/");
         } catch (err) {
         setError(err.message || "Login failed");
         } finally {
