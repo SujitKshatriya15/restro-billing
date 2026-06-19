@@ -18,7 +18,7 @@ function ProtectedHome({ children }) {
 
   if (!isTokenValid(token)) {
     localStorage.removeItem("token"); // clean up expired/bad token
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;
