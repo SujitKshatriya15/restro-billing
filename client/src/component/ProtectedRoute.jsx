@@ -1,14 +1,27 @@
-// ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-function ProtectedRoute({ children }) {
+function isTokenValid(token) {
+  if (!token) return false;
+
+  try {
+    const decoded = jwtDecode(token);
+    const now = Date.now() / 1000; // jwt exp is in seconds
+    return decoded.exp > now;
+  } catch (err) {
+    return false; // malformed token
+  }
+}
+
+function ProtectedHome({ children }) {
   const token = localStorage.getItem("token");
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  if (!isTokenValid(token)) {
+    localStorage.removeItem("token"); // clean up expired/bad token
+    return <Navigate to="/" replace />;
   }
 
   return children;
 }
 
-export default ProtectedRoute;
+export default ProtectedHome;
