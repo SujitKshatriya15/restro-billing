@@ -1,3 +1,4 @@
+import React from "react";
 import BillRecords from "../components/BillRecords";
 import ItemSoldDetails from "../components/ItemSoldDetails";
 
