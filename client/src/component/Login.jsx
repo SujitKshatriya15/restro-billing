@@ -15,8 +15,7 @@ function Login(){
 
         try {
         const response = await fetch(
-            // "https://restro-billing-yogurt-co.onrender.com/login/auth",
-            "http://localhost:5001/login/auth",
+            "https://restro-billing-yogurt-co.onrender.com/login/auth",
             {
             method: "POST",
             headers: {
