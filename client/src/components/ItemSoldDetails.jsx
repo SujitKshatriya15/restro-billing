@@ -10,7 +10,7 @@ function ItemSoldDetails() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5001/items-analysis");
+      const response = await fetch("https://restro-billing-yogurt-co.onrender.com/items-analysis");
 
       if (!response.ok) {
         throw new Error("Failed to load analysis data");
