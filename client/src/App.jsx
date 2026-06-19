@@ -6,8 +6,10 @@ import {
   Route
 } from "react-router-dom";
 import Order from "./component/Order";
-import Current from "./component/Current";
+import Home from "./component/Home";
 import Records from "./component/Records"
+import Login from "./component/Login"
+import ProtectedRoute from "./component/ProtectedRoute";
 import { RouteOr } from "lucide-react";
 
 
@@ -16,7 +18,8 @@ function App(){
         <div>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element = {<Current />}/>
+                        <Route path="/" element = {<Login />}/>
+                        <Route path="/home" element = {<ProtectedRoute><Home /></ProtectedRoute>}/>
                         <Route path="/records" element = {<Records />}/>
                         <Route path="/menu/:tableNumber" element={<Order />}/>
                     </Routes>

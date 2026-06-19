@@ -60,7 +60,7 @@ function Records() {
         </div>
         <button
           className="order-btn"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
         >
           NEW ORDER
         </button>

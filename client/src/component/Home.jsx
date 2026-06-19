@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
-function Current() {
+function Home() {
   const navigate = useNavigate();
 
   const [tables, setTables] = useState([]);
@@ -64,7 +64,6 @@ function Current() {
     // Append the style to the document head
     document.head.appendChild(style);
   }
-  
 
   return (
     <div className="orders">
@@ -145,5 +144,5 @@ function Current() {
   );
 }
 
-export default Current;
+export default Home;
 

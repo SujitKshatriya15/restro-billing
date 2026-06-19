@@ -3,12 +3,14 @@ import Database from "better-sqlite3";
 import cors from "cors";
 import dotenv from "dotenv";
 import { Pool } from "pg";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
 
 dotenv.config();
 
 const client = new Pool({
   connectionString: process.env.CONNECTION_STRING,
-  ssl:{
+  ssl: {
     rejectUnauthorized: false,
   },
 });
@@ -17,9 +19,76 @@ await client.connect();
 const app = express();
 // const db = new Database("db/cafe.db");
 const port = 5001;
-app.use(cors());
+app.use(cors(
+  {
+  origin: "https://restro-billing-smoky.vercel.app",
+  credentials: true,
+}
+));
 app.use(express.json());
 
+
+function requireAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  console.log(authHeader);
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+}
+
+app.post("/login/auth", async (req,res) =>{
+  try{
+    const {username, password} = req.body
+    if(!username || !password){
+      return res.status(400).json({ message: "Username and password are required" });
+    }
+
+    const result = await client.query(
+      `
+      SELECT username, password_hash
+      FROM accounts
+      WHERE username = $1
+      `, [username]
+    );
+    if(result.rows[0] === undefined  || result.rows[0] === 0){
+     return res.status(400).json({message: "Invalid username or password"});
+    }
+    const account = result.rows[0];
+    const passwordMatchs = await bcrypt.compare(password,account.password_hash)
+    console.log("ok")
+    if(!passwordMatchs){
+     return res.status(401).json({ message: "Invalid username or password" });
+    }
+    const token = jwt.sign(
+      { id: account.id, username: account.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: account.id,
+        username: account.username,
+      },
+    });
+
+  } catch (err){
+    console.log("login error: ", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 
 app.get("/categories", async (req, res) => {
@@ -67,7 +136,7 @@ app.post("/kot", async (req, res) => {
         FROM tables
         WHERE table_number = $1
       `,
-      [tableNumber]
+      [tableNumber],
     );
     const table = result.rows[0];
     if (!table) {
@@ -83,9 +152,10 @@ app.post("/kot", async (req, res) => {
         UPDATE bills
         SET customer_name = $1
         WHERE bill_id = $2
-      `,[customerName, billId]
+      `,
+        [customerName, billId],
       );
-    };
+    }
 
     if (description) {
       await client.query(
@@ -93,7 +163,8 @@ app.post("/kot", async (req, res) => {
         UPDATE bills
         SET description = $1
         WHERE bill_id = $2
-      `,[description, billId]
+      `,
+        [description, billId],
       );
     }
 
@@ -118,7 +189,8 @@ app.post("/kot", async (req, res) => {
             CURRENT_TIMESTAMP
           )
           RETURNING bill_id
-        `,[tableNumber, customerName, description, parcel ? 1 : 0]
+        `,
+        [tableNumber, customerName, description, parcel ? 1 : 0],
       );
       billId = result.rows[0].bill_id;
 
@@ -129,7 +201,8 @@ app.post("/kot", async (req, res) => {
           status = 'OCCUPIED',
           current_bill_id = $1
         WHERE table_number = $2
-      `,[billId, tableNumber]
+      `,
+        [billId, tableNumber],
       );
     }
 
@@ -161,7 +234,7 @@ app.post("/kot", async (req, res) => {
           item.qty,
           item.price,
           item.finalPrice,
-        ]
+        ],
       );
 
       totalAdded += item.finalPrice;
@@ -169,14 +242,15 @@ app.post("/kot", async (req, res) => {
 
     //table transfer logic
     if (transferTable && transferTable !== tableNumber) {
-     await client.query(
+      await client.query(
         `
         UPDATE tables
         SET
           status = 'AVAILABLE',
           current_bill_id = NULL
         WHERE table_number = $1
-      `,[tableNumber]
+      `,
+        [tableNumber],
       );
 
       await client.query(
@@ -186,7 +260,8 @@ app.post("/kot", async (req, res) => {
           status = 'OCCUPIED',
           current_bill_id = $1
         WHERE table_number = $2
-      `,[billId, transferTable]
+      `,
+        [billId, transferTable],
       );
 
       await client.query(
@@ -194,7 +269,8 @@ app.post("/kot", async (req, res) => {
         UPDATE bills
         SET table_number = $1
         WHERE bill_id = $2
-      `,[transferTable, billId]
+      `,
+        [transferTable, billId],
       );
     }
     //bill total update
@@ -204,8 +280,9 @@ app.post("/kot", async (req, res) => {
       SET total_cost =
         total_cost + $1
       WHERE bill_id = $2
-    `,[totalAdded, billId]
-  );
+    `,
+      [totalAdded, billId],
+    );
 
     res.json({
       success: true,
@@ -222,20 +299,22 @@ app.post("/kot", async (req, res) => {
 
 app.post("/bill", async (req, res) => {
   try {
-    const { tableNumber, customerName, description, parcel, items, cash } = req.body;
+    const { tableNumber, customerName, description, parcel, items, cash } =
+      req.body;
 
     // =====================
     // FIND ACTIVE BILL
     // =====================
 
     const result = await client.query(
-        `
+      `
         SELECT *
         FROM tables
         WHERE table_number = $1
-      `, [tableNumber]
-      )
-      const table = result.rows[0];
+      `,
+      [tableNumber],
+    );
+    const table = result.rows[0];
 
     if (!table) {
       return res.status(404).json({
@@ -251,7 +330,7 @@ app.post("/bill", async (req, res) => {
 
     if (!billId) {
       const billResult = await client.query(
-          `
+        `
           INSERT INTO bills (
             table_number,
             customer_name,
@@ -269,7 +348,7 @@ app.post("/bill", async (req, res) => {
             CURRENT_TIMESTAMP
           )
         `,
-        [tableNumber, customerName, description, parcel ? 1 : 0, cash ? 1 : 0]
+        [tableNumber, customerName, description, parcel ? 1 : 0, cash ? 1 : 0],
       );
 
       billId = billResult.rows[0].bill_id;
@@ -281,7 +360,9 @@ app.post("/bill", async (req, res) => {
           status = 'OCCUPIED',
           current_bill_id = $1
         WHERE table_number = $2
-      `, [billId, tableNumber]);
+      `,
+        [billId, tableNumber],
+      );
     }
 
     // =====================
@@ -297,7 +378,7 @@ app.post("/bill", async (req, res) => {
           description = $2
         WHERE bill_id = $3
         `,
-        [customerName, description, billId]
+        [customerName, description, billId],
       );
     }
 
@@ -306,10 +387,11 @@ app.post("/bill", async (req, res) => {
     // =====================
 
     const newItems = items.filter((item) => item.isNew);
-    
+
     let addedTotal = 0;
     for (const item of newItems) {
-      await client.query(`
+      await client.query(
+        `
         INSERT INTO orders (
           food_id,
           bill_id,
@@ -323,15 +405,16 @@ app.post("/bill", async (req, res) => {
           $1, $2, $3, $4, $5, $6,
           CURRENT_TIMESTAMP
         )
-      `, [
-        item.food_id,
-        billId,
-        item.option_id,
-        item.qty,
-        item.price,
-        item.finalPrice,
-      ]
-    );
+      `,
+        [
+          item.food_id,
+          billId,
+          item.option_id,
+          item.qty,
+          item.price,
+          item.finalPrice,
+        ],
+      );
 
       addedTotal += item.finalPrice;
     }
@@ -346,15 +429,16 @@ app.post("/bill", async (req, res) => {
       SET total_cost =
         total_cost + $1
       WHERE bill_id = $2
-    `,[addedTotal, billId]
-  );
+    `,
+      [addedTotal, billId],
+    );
 
     // =====================
     // GET INVOICE ITEMS
     // =====================
 
     const InvoicerResult = await client.query(
-        `
+      `
         SELECT
           o.quantity,
           o.unit_price,
@@ -369,22 +453,24 @@ app.post("/bill", async (req, res) => {
           ON o.option_id =
              fo.option_id
         WHERE o.bill_id = $1
-      `,[billId]
-      );
-  
+      `,
+      [billId],
+    );
+
     const invoiceItems = InvoicerResult.rows;
     // =====================
     // GET FINAL BILL
     // =====================
 
     const billResult = await client.query(
-        `
+      `
         SELECT *
         FROM bills
         WHERE bill_id = $1
-      `,[billId]
-      );
-      const bill = billResult.rows[0];
+      `,
+      [billId],
+    );
+    const bill = billResult.rows[0];
 
     // =====================
     // CLOSE BILL
@@ -395,8 +481,9 @@ app.post("/bill", async (req, res) => {
       UPDATE bills
       SET status = 'PAID'
       WHERE bill_id = $1
-    `, [billId]
-  );
+    `,
+      [billId],
+    );
 
     // =====================
     // FREE TABLE
@@ -409,7 +496,9 @@ app.post("/bill", async (req, res) => {
         status = 'AVAILABLE',
         current_bill_id = NULL
       WHERE table_number = $1
-    `, [tableNumber]);
+    `,
+      [tableNumber],
+    );
 
     // =====================
     // RESPONSE
@@ -437,14 +526,14 @@ app.get("/orders/:billId", async (req, res) => {
   try {
     const billId = req.params.billId;
     const orders = await client.query(
-        `
+      `
       SELECT o.*, f.food_name, fo.option_name
       FROM orders o
       JOIN foods f ON o.food_id = f.food_id
       LEFT JOIN food_options fo ON o.option_id = fo.option_id
       WHERE o.bill_id = $1
     `,
-      [billId]
+      [billId],
     );
 
     res.json(orders.rows);
@@ -461,10 +550,12 @@ app.get("/bills/:billId", async (req, res) => {
     const billId = req.params.billId;
 
     const result = await client.query(
-        `
+      `
       SELECT * FROM bills
       WHERE bill_id = $1
-    `, [billId]);
+    `,
+      [billId],
+    );
 
     const bill = result.rows[0];
     const rows = bill;
@@ -482,13 +573,13 @@ app.get("/bills/:billId", async (req, res) => {
 app.get("/tables", async (req, res) => {
   try {
     const result = await client.query(
-        `
+      `
         SELECT * FROM tables
         ORDER BY
           CASE WHEN table_number LIKE 'P%' THEN 1 ELSE 0 END,
           CAST(REPLACE(table_number, 'P', '') AS INTEGER);
-      `
-      );
+      `,
+    );
     const tables = result.rows;
 
     res.json(tables);
@@ -511,8 +602,9 @@ app.get("/table-orders/:tableNumber", async (req, res) => {
           SELECT current_bill_id
           FROM tables
           WHERE table_number = $1
-        `, [tableNumber]
-      );
+        `,
+      [tableNumber],
+    );
 
     const table = result.rows[0];
 
@@ -528,8 +620,9 @@ app.get("/table-orders/:tableNumber", async (req, res) => {
           SELECT *
           FROM bills
           WHERE bill_id = $1
-        `, [table.current_bill_id]
-      )
+        `,
+      [table.current_bill_id],
+    );
 
     const orders = await client.query(
       `
@@ -550,8 +643,9 @@ app.get("/table-orders/:tableNumber", async (req, res) => {
             ON o.option_id =
                fo.option_id
           WHERE o.bill_id = $1
-        `, [table.current_bill_id]
-      );
+        `,
+      [table.current_bill_id],
+    );
 
     res.json({
       bill: bill.rows[0],
@@ -573,18 +667,18 @@ app.get("/bills-history", async (req, res) => {
       WHERE status = 'PAID'
     `);
     res.json(bills.rows);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
     res.status(500).json({
       error: err.message,
     });
-  } 
-})
+  }
+});
 app.get("/bill-details/:billId", async (req, res) => {
-  try{
-    const {billId} = req.params;
-    const billDetails = await client.query(`
+  try {
+    const { billId } = req.params;
+    const billDetails = await client.query(
+      `
       SELECT
         b.*,
         o.quantity,
@@ -597,22 +691,21 @@ app.get("/bill-details/:billId", async (req, res) => {
       JOIN foods f ON o.food_id = f.food_id
       LEFT JOIN food_options fo ON o.option_id = fo.option_id
       WHERE b.bill_id = $1
-    `, [billId]);
-    
+    `,
+      [billId],
+    );
+
     res.json(billDetails.rows);
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
     res.status(500).json({
       error: err.message,
     });
-  } 
+  }
 });
-
 
 app.get("/check-table-status", async (req, res) => {
   try {
-
     let total = 0;
     const totalResult = await client.query(
       `
@@ -620,10 +713,9 @@ app.get("/check-table-status", async (req, res) => {
       FROM tables t
       INNER JOIN bills b ON b.bill_id = t.current_bill_id
       WHERE t.status = 'OCCUPIED';
-      `);
-    res.json(
-      totalResult.rows,
+      `,
     );
+    res.json(totalResult.rows);
   } catch (err) {
     console.log(err);
 
@@ -655,19 +747,18 @@ app.get("/bill-records", async (req, res) => {
       LEFT JOIN food_options fo ON o.option_id = fo.option_id
       GROUP BY b.bill_id
       ORDER BY b.bill_id DESC;
-      `
-    )
+      `,
+    );
 
     const billDetails = BillDetailsResult.rows;
 
     res.json({
       billDetails,
-    })
+    });
   } catch (err) {
     console.log("ERROR FETCHING BILL RECORDS: ", err);
   }
-})
-
+});
 
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
