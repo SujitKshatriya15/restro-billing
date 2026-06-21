@@ -19,12 +19,13 @@ await client.connect();
 const app = express();
 // const db = new Database("db/cafe.db");
 const port = 5001;
-app.use(
-  cors({
-    origin: "https://restro-billing-smoky.vercel.app",
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: "https://restro-billing-smoky.vercel.app",
+//     credentials: true,
+//   }),
+// );
+app.use(cors());
 app.use(express.json());
 
 function requireAuth(req, res, next) {

@@ -40,31 +40,14 @@ function BillRecords() {
 
   if (loading) {
     return (
-      <div className="page-content">
-        <h2>Loading records...</h2>
+      <div className="analysis">
+        <h2 className="analysis-loading">Loading records...</h2>
       </div>
     );
   }
 
   return (
     <div className="page-content">
-        <nav className="navbar">
-        <div className="nav-left">
-          <Menu
-            size={28}
-            className="menu-icon"
-            onClick={() => changeTheme()}
-          />
-
-          <h1>Bill Records</h1>
-        </div>
-        <button
-          className="order-btn"
-          onClick={() => navigate("/home")}
-        >
-          NEW ORDER
-        </button>
-      </nav>
 
       <div className="records-list">
         {billData.map((bill) => (
