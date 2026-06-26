@@ -243,7 +243,7 @@ function ManageMenu() {
           )}
 
           {/* FOOD NAME + PRICE */}
-          
+          {formCategory && formCategory !== "add-new" && (
             <>
               <label>Food Name</label>
               <input
@@ -266,7 +266,7 @@ function ManageMenu() {
                 Add Food
               </button>
             </>
-          
+          )}
 
           <div className="divider" />
 
