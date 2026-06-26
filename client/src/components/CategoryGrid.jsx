@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function CategoryGrid({categories,selectedCategoryName,setSelectedCategory, setSelectedCategoryName}){
+function CategoryGrid({categories = [],selectedCategoryName,setSelectedCategory, setSelectedCategoryName}){
     return(
         <div className="categories">
           {categories.map((category) => (

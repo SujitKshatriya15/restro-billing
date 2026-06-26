@@ -183,6 +183,7 @@ function ManageMenu() {
 
       <div className="main-layout">
         {/* CATEGORIES */}
+        
         <CategoryGrid
           categories={categories}
           selectedCategoryName={selectedCategoryName}
