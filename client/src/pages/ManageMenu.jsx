@@ -60,11 +60,12 @@ function ManageMenu() {
         foodOptionsRes.json(),
       ]);
 
-      setCategories(categoriesData);
-      setFoods(foodsData);
-      setFoodOptions(foodOptionsData);
+     
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+      setFoods(Array.isArray(foodsData) ? foodsData : []);
+      setFoodOptions(Array.isArray(foodOptionsData) ? foodOptionsData : []);
 
-      if (categoriesData.length > 0) {
+      if (Array.isArray(categoriesData) && categoriesData.length > 0) {
         setSelectedCategory(categoriesData[0].category_id);
         setSelectedCategoryName(categoriesData[0].category_name);
       }
