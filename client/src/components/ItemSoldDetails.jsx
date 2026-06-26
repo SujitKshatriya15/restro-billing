@@ -9,7 +9,14 @@ function ItemSoldDetails() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("https://restro-billing-yogurt-co.onrender.com/items-analysis");
+      const response = await fetch("https://restro-billing-yogurt-co.onrender.com/items-analysis",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to load analysis data");
       }

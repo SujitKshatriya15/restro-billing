@@ -61,6 +61,16 @@ function Order() {
 
       const tablesRes = await fetch(
         "https://restro-billing-yogurt-co.onrender.com/tables",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            tableNumber,
+          }),
+        }
       );
 
       const tablesData = await tablesRes.json();
@@ -72,7 +82,14 @@ function Order() {
       // =====================
 
       const categoriesRes = await fetch(
-        "https://restro-billing-yogurt-co.onrender.com/categories",
+        "https://restro-billing-yogurt-co.onrender.com/categories"
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
 
       const categoriesData = await categoriesRes.json();
@@ -90,7 +107,14 @@ function Order() {
       // =====================
 
       const foodsRes = await fetch(
-        "https://restro-billing-yogurt-co.onrender.com/foods",
+        "https://restro-billing-yogurt-co.onrender.com/foods"
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
 
       const foodsData = await foodsRes.json();
@@ -102,7 +126,14 @@ function Order() {
       // =====================
 
       const foodOptionsRes = await fetch(
-        "https://restro-billing-yogurt-co.onrender.com/food-options",
+        "https://restro-billing-yogurt-co.onrender.com/food-options"
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
 
       const foodOptionsData = await foodOptionsRes.json();
@@ -114,7 +145,14 @@ function Order() {
       // =====================
 
       const billRes = await fetch(
-        `https://restro-billing-yogurt-co.onrender.com/table-orders/${tableNumber}`,
+        `https://restro-billing-yogurt-co.onrender.com/table-orders/${tableNumber}`
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
 
       const billData = await billRes.json();
@@ -269,6 +307,7 @@ function Order() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
             tableNumber,
@@ -300,6 +339,8 @@ function Order() {
 
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+
           },
 
           body: JSON.stringify({

@@ -11,6 +11,13 @@ function BillRecords() {
     try {
       const response = await fetch(
         "https://restro-billing-yogurt-co.onrender.com/bill-records"
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
 
       const data = await response.json();

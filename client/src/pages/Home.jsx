@@ -15,6 +15,16 @@ function Home() {
       const response = await fetch(
         "https://restro-billing-yogurt-co.onrender.com/tables"
         // "http://localhost:5001/tables"
+        ,{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            tableNumber,
+          }),
+        }
       );
 
       const data = await response.json();
@@ -32,7 +42,15 @@ function Home() {
       const response = await fetch(
         `https://restro-billing-yogurt-co.onrender.com/check-table-status`
         // `http://localhost:5001/check-table-status`
+        ,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
+      
       const data = await response.json();
       const priceMap = {};
 
