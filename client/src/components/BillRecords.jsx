@@ -6,7 +6,7 @@ function BillRecords() {
   const [billData, setBillData] = useState([]);
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
-
+const token = localStorage.getItem("token");
   const fetchData = async () => {
     try {
       const response = await fetch(

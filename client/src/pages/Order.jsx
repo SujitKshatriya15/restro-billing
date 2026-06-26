@@ -47,6 +47,7 @@ function Order() {
   const [transferTable, setTransferTable] = useState("");
 
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const { tableNumber } = useParams();
   // =========================

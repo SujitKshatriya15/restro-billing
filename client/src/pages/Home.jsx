@@ -10,6 +10,7 @@ function Home() {
   const [show,setShow] = useState(false);
   const [totalPrice, setTotalPrice] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const token = localStorage.getItem("token");
   const fetchTables = async () => {
     try {
       const response = await fetch(

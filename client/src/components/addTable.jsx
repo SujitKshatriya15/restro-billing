@@ -5,6 +5,7 @@ function AddTable({ show, setShow }) {
   const [tableNumber, setTableNumber] = useState("");
   const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
   const addTable = async (e) => {
     e.preventDefault();
 

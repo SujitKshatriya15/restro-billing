@@ -4,7 +4,7 @@ function ItemSoldDetails() {
   const [analysisData, setAnalysisData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+const token = localStorage.getItem("token");
   const fetchAnalysis = async () => {
     setLoading(true);
     setError("");
