@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
+// Components
 import BillItems from "../components/BillItems";
 import Modal from "../components/Modal";
 import FoodGrid from "../components/FoodGrid";
 import Navbar from "../components/Navbar";
+import CategoryGrid from "../components/CategoryGrid";
+
+
+
 function Order() {
   // =========================
   // STATES
@@ -352,24 +358,12 @@ function Order() {
             CATEGORIES
         ===================== */}
 
-        <div className="categories">
-          {categories.map((category) => (
-            <div
-              key={category.category_id}
-              className={`category ${
-                selectedCategoryName === category.category_name
-                  ? "active-category"
-                  : ""
-              }`}
-              onClick={() => {
-                setSelectedCategory(category.category_id);
-                setSelectedCategoryName(category.category_name);
-              }}
-            >
-              {category.category_name}
-            </div>
-          ))}
-        </div>
+        <CategoryGrid 
+          categories = {categories}
+          selectedCategoryName = {selectedCategoryName}
+          setSelectedCategory = {setSelectedCategory}
+          setSelectedCategoryName = {setSelectedCategoryName}
+        />
 
         {/* =====================
             FOOD SECTION
