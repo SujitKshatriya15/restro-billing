@@ -18,12 +18,14 @@ function App(){
         <div>
                 <BrowserRouter>
                     <Routes>
+                        <ProtectedRoute>
                         <Route path="/login" element = {<Login />}/>
-                        {/* <Route path="/" element = {<ProtectedRoute><Home /></ProtectedRoute>}/> */}
+                        <Route path="/" element = {<Home />}/>
                         <Route path="/" element = {<Home />}/>
                         
                         <Route path="/records" element = {<Records />}/>
                         <Route path="/menu/:tableNumber" element={<Order />}/>
+                        </ProtectedRoute>
                     </Routes>
                 </BrowserRouter>
 
