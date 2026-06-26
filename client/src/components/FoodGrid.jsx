@@ -1,6 +1,6 @@
 import React from "react";
 
-function FoodGrid({filteredFoods, openFoodOptions}) {
+function FoodGrid({filteredFoods = [], openFoodOptions}) {
   return(
     <div className="food-grid">
     {
