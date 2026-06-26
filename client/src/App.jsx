@@ -19,7 +19,7 @@ function App(){
                 <BrowserRouter>
                     <Routes>
                         
-                        <Route path="/login" element = {<ProtectedRoute><Login /></ProtectedRoute>}/>
+                        <Route path="/login" element = {<Login />}/>
                         <Route path="/" element = {<ProtectedRoute><Home /></ProtectedRoute>}/>
                         {/* <Route path="/" element = {<Home />}/> */}
                         
