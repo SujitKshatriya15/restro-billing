@@ -194,9 +194,9 @@ function Order() {
     }
   };
 
-  // =========================
+  
   // USE EFFECT
-  // =========================
+  
 
   useEffect(() => {
     fetchData();
@@ -208,9 +208,8 @@ function Order() {
     (food) => food.category_id === selectedCategory,
   );
 
-  // =========================
   // OPEN FOOD OPTIONS
-  // =========================
+  
 
   const openFoodOptions = (food) => {
     setSelectedFood(food);

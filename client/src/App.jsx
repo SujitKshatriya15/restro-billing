@@ -18,11 +18,10 @@ function App(){
         <div>
                 <BrowserRouter>
                     <Routes>
-                        
                         <Route path="/login" element = {<Login />}/>
                         <Route path="/" element = {<ProtectedRoute><Home /></ProtectedRoute>}/>
                         {/* <Route path="/" element = {<Home />}/> */}
-                        
+                        <Route path="/manage-menu" element = {<ProtectedRoute><ManageMenu /></ProtectedRoute>}/>
                         <Route path="/records" element = {<ProtectedRoute><Records /></ProtectedRoute>}/>
                         <Route path="/menu/:tableNumber" element={<ProtectedRoute><Order /></ProtectedRoute>}/>
                         
