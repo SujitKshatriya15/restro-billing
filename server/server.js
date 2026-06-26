@@ -848,7 +848,61 @@ app.post("/add-extra-p", async(req,res)=>{
 })
 
 
+app.post("/add-food", async (req,res)=>{
+  const {food_name, category_id,price} = req.body;
+  try{
+    const checkFoodExists = await client.query(`
+      select food_name from foods where food_name = $1 
+      `, [food_name]);
+    if(checkFoodExists.rows.length > 0) return res.status(409).json("food already exists");
+
+    await client.query(`
+      INSERT INTO foods(food_name, category_id, price) VALUES ($1,$2,$3)
+      `, [food_name, category_id, price]);
+    res.status(201).json({ message: "Food added successfully" });
+
+  } catch(err){
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+app.post("/add-category", async(req,res)=>{
+  const {category_name} = req.body;
+  try{
+    const checkCategoryExists = await client.query(`
+      select category_name from categories where category_name = $1 
+      `, [category_name]);
+      if(checkCategoryExists.rows.length > 0) return res.status(409).json("Category already exists");
+      await client.query(`
+      INSERT INTO categories(category_name) VALUES ($1)
+      `,[category_name])
+      res.status(201).json({message: "Category added succesfully"});
+  } catch(err){
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+app.post("/add-options", async(req,res)=>{
+  const {option_name, extra_price} = req.body;
+  try {
+    const checkOptionExists = await client.query(`
+      select option_name from options where option_name = $1 
+      `, [option_name]);
+    if(checkOptionExists.rows.length > 0) return res.status(409).json("Option already exists");
+    await client.query(`
+      INSERT INTO food_options(option_name, extra_price) VALUES ($1,$2)
+      `,[option_name, extra_price]);
+    res.status(201).json({message: "Category added succesfully"});
+  } catch (error) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });
+

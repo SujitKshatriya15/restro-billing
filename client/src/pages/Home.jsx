@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar"
-import AddTable from "../components/addTable";
+import AddTable from "../components/AddTable";
 function Home() {
   const navigate = useNavigate();
 
