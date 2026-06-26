@@ -63,14 +63,11 @@ function Order() {
       const tablesRes = await fetch(
         "https://restro-billing-yogurt-co.onrender.com/tables",
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            tableNumber,
-          }),
+          }
         }
       );
 
