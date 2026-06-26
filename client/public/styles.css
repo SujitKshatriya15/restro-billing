@@ -1191,6 +1191,101 @@ body {
   text-align: right;
 }
 
+
+/* =========================
+   ADD ITEM FORM
+========================= */
+
+.bill-section label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.customer-input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid #333333;
+  border-radius: 12px;
+  background: #e8e8e8;
+  color: #111111;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.customer-input:focus {
+  border-color: #111111;
+  background: #f0f0f0;
+}
+
+.customer-input::placeholder {
+  color: #999999;
+}
+
+.kot-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  background: #111111;
+  color: #f5f5f5;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.kot-btn:hover {
+  transform: scale(1.02);
+  background: #000000;
+}
+
+.kot-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.inline-add {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1.5px solid #cccccc;
+  border-radius: 14px;
+  background: #ebebeb;
+  animation: expandRecord 0.2s ease;
+}
+
+.form-status {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #e8e8e8;
+  border: 1.5px solid #333333;
+  color: #111111;
+  text-align: center;
+}
+
+.bill-section .divider {
+  width: 100%;
+  height: 1px;
+  background: #333333;
+  margin: 0;
+}
+
+.bill-section .section-title {
+  font-size: 22px;
+  margin-bottom: 0;
+}
+
+
+
 /* =========================
    RESPONSIVE
 ========================= */
