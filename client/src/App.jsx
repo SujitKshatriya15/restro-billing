@@ -19,7 +19,9 @@ function App(){
                 <BrowserRouter>
                     <Routes>
                         <Route path="/login" element = {<Login />}/>
-                        <Route path="/" element = {<ProtectedRoute><Home /></ProtectedRoute>}/>
+                        {/* <Route path="/" element = {<ProtectedRoute><Home /></ProtectedRoute>}/> */}
+                        <Route path="/" element = {<Home />}/>
+                        
                         <Route path="/records" element = {<Records />}/>
                         <Route path="/menu/:tableNumber" element={<Order />}/>
                     </Routes>

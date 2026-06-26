@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { Pool } from "pg";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import requireAuth from "./auth/auth.js";
 
 dotenv.config();
 
@@ -17,35 +18,18 @@ const client = new Pool({
 await client.connect();
 
 const app = express();
-// const db = new Database("db/cafe.db");
+// const db = new Database("db/caf  e.db");
 const port = 5001;
-app.use(
-  cors({
-    origin: "https://restro-billing-smoky.vercel.app",
-    credentials: true,
-  }),
-);
-// app.use(cors());
+// app.use(
+//   cors({
+//     origin: "https://restro-billing-smoky.vercel.app",
+//     credentials: true,
+//   }),
+// );
+
+
+app.use(cors());
 app.use(express.json());
-
-function requireAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  console.log(authHeader);
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Not authenticated" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
-}
 
 app.post("/login/auth", async (req, res) => {
   try {
@@ -94,6 +78,9 @@ app.post("/login/auth", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+app.use(requireAuth);
+
 
 app.get("/categories", async (req, res) => {
   const categories = await client.query(`
@@ -828,6 +815,35 @@ app.get("/items-analysis", async (req,res)=>{
   } catch (err){
     console.log("Error fetching the data from DB: ", err )
     res.status(404)
+  }
+})
+
+app.post("/add-extra-p", async(req,res)=>{
+  const {tableNumber } = req.body;
+  try{
+    const result = await client.query(
+      `
+        SELECT *
+        FROM tables
+        WHERE table_number = $1
+      `,
+      [tableNumber],
+    );
+    if(result.rows[0]){
+      return res.status(409).json("table already exists");
+    }
+    await client.query(`
+      insert into tables(table_number, status)
+      values ($1, 'AVAILABLE')
+      `, [tableNumber]
+    );
+    res.status(201).json({ message: "Table inserted" });
+    console.log("inserted a table");
+    
+    
+
+  }catch(err){
+    console.log("error uploading: ", err)
   }
 })
 

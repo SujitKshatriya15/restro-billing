@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar"
+import AddTable from "../components/addTable";
 function Home() {
   const navigate = useNavigate();
 
   const [tables, setTables] = useState([]);
+  const [show,setShow] = useState(false);
   const [totalPrice, setTotalPrice] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const fetchTables = async () => {
     try {
       const response = await fetch(
-        "https://restro-billing-yogurt-co.onrender.com/tables"
+        // "https://restro-billing-yogurt-co.onrender.com/tables"
+        "http://localhost:5001/tables"
       );
 
       const data = await response.json();
@@ -22,10 +26,12 @@ function Home() {
       console.error("Error fetching tables:", err);
     }
   };
+  
   const fetchTableTotalPrice = async () => {
     try {
       const response = await fetch(
-        `https://restro-billing-yogurt-co.onrender.com/check-table-status`
+        // `https://restro-billing-yogurt-co.onrender.com/check-table-status`
+        `http://localhost:5001/check-table-status`
       );
       const data = await response.json();
       const priceMap = {};
@@ -43,6 +49,9 @@ function Home() {
         err
       );
     }
+  }
+  const viewTable = () =>{
+    setShowModal(true);
   }
   const openTable = (tableNumber) => {
     navigate(`/menu/${tableNumber}`);
@@ -137,7 +146,12 @@ function Home() {
                 : table.table_number}
               </h4>
             </div>
-          ))}
+          ))
+        }
+        <button onClick={() => setShow(true)}>+</button>
+        {show && <AddTable 
+        show = {show}
+        setShow = {setShow}/>}
       </div>
     </div>
   );
