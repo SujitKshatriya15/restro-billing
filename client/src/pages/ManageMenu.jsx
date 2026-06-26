@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import CategoryGrid from "../components/CategoryGrid";
 import FoodGrid from "../components/FoodGrid";
 
+const token = localStorage.getItem("token");
 const BASE_URL = "https://restro-billing-yogurt-co.onrender.com";
 
 function ManageMenu() {

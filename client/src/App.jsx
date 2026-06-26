@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Records from "./pages/Records"
 import Login from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoute";
+import ManageMenu from "./pages/ManageMenu";
 import { RouteOr } from "lucide-react";
 
 
