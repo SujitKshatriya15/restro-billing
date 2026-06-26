@@ -20,15 +20,15 @@ await client.connect();
 const app = express();
 // const db = new Database("db/caf  e.db");
 const port = 5001;
-// app.use(
-//   cors({
-//     origin: "https://restro-billing-smoky.vercel.app",
-//     credentials: true,
-//   }),
-// );
+app.use(
+  cors({
+    origin: "https://restro-billing-smoky.vercel.app",
+    credentials: true,
+  }),
+);
 
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 app.post("/login/auth", async (req, res) => {
