@@ -154,11 +154,12 @@ function ManageMenu() {
   const handleAddOption = async () => {
     if (!newOptionName.trim()) return;
     try {
-      const res = await fetch(`${BASE_URL}/add-options`, {
+      const foodOptionRes = await fetch(`${BASE_URL}/add-options`, {
         method: "POST",
         headers: authHeaders,
         body: JSON.stringify({
           option_name: newOptionName.trim(),
+          category_name: formCategory,
           extra_price: parseFloat(newOptionPrice) || 0,
         }),
       });
@@ -167,6 +168,7 @@ function ManageMenu() {
       setFormStatus("Option added!");
       setNewOptionName("");
       setNewOptionPrice("");
+      setFormCategory("");
       setFormOption("");
       await fetchData();
     } catch (err) {
@@ -293,6 +295,23 @@ function ManageMenu() {
           {/* NEW OPTION INPUT */}
           {formOption === "add-new" && (
             <div className="inline-add">
+
+              <select
+                className="customer-input"
+                value={formCategory}
+                onChange={(e) => {
+                  setFormCategory(e.target.value);
+                  setFormStatus("");
+                }}
+              >
+                <option value="">-- Select Category--</option>
+                {categories.map((cat) => (
+                  <option key={cat.category_id} value={cat.category_id}>
+                    {cat.category_name}
+                  </option>
+                ))}
+              </select>
+
               <input
                 className="customer-input"
                 placeholder="Option name"
@@ -306,6 +325,7 @@ function ManageMenu() {
                 value={newOptionPrice}
                 onChange={(e) => setNewOptionPrice(e.target.value)}
               />
+
               <button className="kot-btn" onClick={handleAddOption}>
                 Add Option
               </button>

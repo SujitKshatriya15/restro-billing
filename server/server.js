@@ -885,7 +885,7 @@ app.post("/add-category", async(req,res)=>{
 })
 
 app.post("/add-options", async(req,res)=>{
-  const {option_name, extra_price} = req.body;
+  const {option_name, extra_price, category_id} = req.body;
   try {
     const checkOptionExists = await client.query(`
       select option_name from options where option_name = $1 

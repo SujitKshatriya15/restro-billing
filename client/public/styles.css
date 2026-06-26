@@ -1284,6 +1284,59 @@ body {
   margin-bottom: 0;
 }
 
+/* =========================
+   OPTIONS MULTI-SELECT
+========================= */
+
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.option-toggle {
+  padding: 10px 16px;
+  border: 1.5px solid #aaaaaa;
+  border-radius: 12px;
+  background: #e8e8e8;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.option-toggle:hover {
+  background: #d8d8d8;
+  border-color: #666666;
+}
+
+.option-toggle-active {
+  background: #111111;
+  color: #f5f5f5;
+  border-color: #111111;
+  transform: scale(1.04);
+}
+
+.option-toggle-add {
+  border-style: dashed;
+  color: #555555;
+}
+
+.option-toggle-add:hover {
+  background: #111111;
+  color: #f5f5f5;
+  border-color: #111111;
+  border-style: solid;
+}
+
+.option-price {
+  font-size: 12px;
+  opacity: 0.75;
+}
 
 
 /* =========================
