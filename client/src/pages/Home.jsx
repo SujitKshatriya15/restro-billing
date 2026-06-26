@@ -13,8 +13,8 @@ function Home() {
   const fetchTables = async () => {
     try {
       const response = await fetch(
-        // "https://restro-billing-yogurt-co.onrender.com/tables"
-        "http://localhost:5001/tables"
+        "https://restro-billing-yogurt-co.onrender.com/tables"
+        // "http://localhost:5001/tables"
       );
 
       const data = await response.json();
@@ -30,8 +30,8 @@ function Home() {
   const fetchTableTotalPrice = async () => {
     try {
       const response = await fetch(
-        // `https://restro-billing-yogurt-co.onrender.com/check-table-status`
-        `http://localhost:5001/check-table-status`
+        `https://restro-billing-yogurt-co.onrender.com/check-table-status`
+        // `http://localhost:5001/check-table-status`
       );
       const data = await response.json();
       const priceMap = {};

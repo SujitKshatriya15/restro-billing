@@ -12,7 +12,8 @@ function AddTable({ show, setShow }) {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5001/add-extra-p",
+        // "http://localhost:5001/add-extra-p"
+        "https://restro-billing-yogurt-co.onrender.com/add-extra-p",
         {
           method: "POST",
           headers: {

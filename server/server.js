@@ -42,13 +42,13 @@ app.post("/login/auth", async (req, res) => {
 
     const result = await client.query(
       `
-      SELECT username, password_hash
+      SELECT id, username, password_hash
       FROM accounts
       WHERE username = $1
       `,
       [username],
     );
-    if (result.rows[0] === undefined || result.rows[0] === 0) {
+    if (result.rows.length === 0) {
       return res.status(400).json({ message: "Invalid username or password" });
     }
     const account = result.rows[0];
