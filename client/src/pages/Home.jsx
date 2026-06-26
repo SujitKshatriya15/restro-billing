@@ -17,14 +17,11 @@ function Home() {
         "https://restro-billing-yogurt-co.onrender.com/tables"
         // "http://localhost:5001/tables"
         ,{
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            tableNumber,
-          }),
+          }
         }
       );
 
