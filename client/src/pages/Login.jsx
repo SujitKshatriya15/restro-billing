@@ -49,7 +49,7 @@ function Login(){
       <div>
 
         
-          <div className="modal-overlay">
+          
             <nav className="navbar">
 
           <div className="nav-left">
@@ -65,6 +65,7 @@ function Login(){
 
           </div>
         </nav>
+        <div className="modal-overlay">
         <div className="food-modal login-modal">
           <h2>Login</h2>
 
