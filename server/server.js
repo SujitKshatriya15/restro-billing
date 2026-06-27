@@ -567,8 +567,15 @@ app.get("/tables", async (req, res) => {
       `
         SELECT * FROM tables
         ORDER BY
-          CASE WHEN table_number LIKE 'P%' THEN 1 ELSE 0 END,
-          CAST(REPLACE(table_number, 'P', '') AS INTEGER);
+          CASE WHEN table_number ~ '^[0-9]+$' THEN 0
+              WHEN table_number LIKE 'P%' THEN 1
+              ELSE 2
+          END,
+          CASE 
+            WHEN table_number ~ '^[0-9]+$' THEN CAST(table_number AS INTEGER)
+            WHEN table_number LIKE 'P%' THEN CAST(REPLACE(table_number, 'P', '') AS INTEGER)
+            ELSE 0
+          END;
       `,
     );
     const tables = result.rows;
