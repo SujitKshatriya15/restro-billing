@@ -98,35 +98,22 @@ function Home() {
       {/* TOP TABLES */}
 
       <div className="cards-container">
-        {tables
-          .filter(
-            (table) =>
-              !String(
-                table.table_number
-              ).startsWith("P")
-          )
-          .map((table) => (
-            <div
-              key={table.table_number}
-              onClick={() =>
-                openTable(
-                  table.table_number
-                )
-              }
-              className={`card ${
-                table.status === "AVAILABLE"
-                  ? "available-card"
-                  : "occupied-card"
-              }`}
-            >
-              <h4>
-                {totalPrice[table.table_number] !== undefined
-                ? `₹${totalPrice[table.table_number]}`
-                : table.table_number}
-              </h4>
-            </div>
-          ))}
+  {tables
+    .filter((table) => !isNaN(table.table_number))  // ← changed
+    .map((table) => (
+      <div
+        key={table.table_number}
+        onClick={() => openTable(table.table_number)}
+        className={`card ${table.status === "AVAILABLE" ? "available-card" : "occupied-card"}`}
+      >
+        <h4>
+          {totalPrice[table.table_number] !== undefined
+            ? `₹${totalPrice[table.table_number]}`
+            : table.table_number}
+        </h4>
       </div>
+    ))}
+</div>
 
       {/* Divider */}
 
@@ -135,40 +122,24 @@ function Home() {
       {/* PARCELS */}
 
       <div className="more-cards">
-        {tables
-          .filter((table) =>
-            String(
-              table.table_number
-            ).startsWith("P")
-          )
-          
-          .map((table) => (
-            <div
-              key={table.table_number}
-              onClick={() =>
-                openTable(
-                  table.table_number
-                )
-              }
-              className={`card ${
-                table.status === "AVAILABLE"
-                  ? "available-card"
-                  : "occupied-card"
-              }`}
-            >
-              <h4>
-                {totalPrice[table.table_number] !== undefined
-                ? `₹${totalPrice[table.table_number]}`
-                : table.table_number}
-              </h4>
-            </div>
-          ))
-        }
-        <button onClick={() => setShow(true)}>+</button>
-        {show && <AddTable 
-        show = {show}
-        setShow = {setShow}/>}
+  {tables
+    .filter((table) => isNaN(table.table_number))  // ← changed
+    .map((table) => (
+      <div
+        key={table.table_number}
+        onClick={() => openTable(table.table_number)}
+        className={`card ${table.status === "AVAILABLE" ? "available-card" : "occupied-card"}`}
+      >
+        <h4>
+          {totalPrice[table.table_number] !== undefined
+            ? `₹${totalPrice[table.table_number]}`
+            : table.table_number}
+        </h4>
       </div>
+    ))}
+  <button onClick={() => setShow(true)}>+</button>
+  {show && <AddTable show={show} setShow={setShow} />}
+</div>
     </div>
   );
 }
