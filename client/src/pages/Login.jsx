@@ -46,62 +46,66 @@ function Login(){
     };
 
     return(
-        <div className="modal-overlay">
-          <nav className="navbar">
+      <div>
 
-        <div className="nav-left">
+        
+          <div className="modal-overlay">
+            <nav className="navbar">
 
-          <Menu
-            size={28}
-            className="menu-icon"
-          />
+          <div className="nav-left">
 
-          <h1>
-            Restro-billing
-          </h1>
+            <Menu
+              size={28}
+              className="menu-icon"
+            />
 
+            <h1>
+              Restro-billing
+            </h1>
+
+          </div>
+        </nav>
+        <div className="food-modal login-modal">
+          <h2>Login</h2>
+
+          <form className="login-form" onSubmit={loginPost}>
+            <div className="login-field">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                autoComplete="username"
+              />
+            </div>
+
+            <div className="login-field">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+            </div>
+
+            {error && <p className="login-error">{error}</p>}
+
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          {/* <button className="close-btn" onClick={contact}>
+            Contact
+          </button> */}
         </div>
-      </nav>
-      <div className="food-modal login-modal">
-        <h2>Login</h2>
-
-        <form className="login-form" onSubmit={loginPost}>
-          <div className="login-field">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoComplete="username"
-            />
-          </div>
-
-          <div className="login-field">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-            />
-          </div>
-
-          {error && <p className="login-error">{error}</p>}
-
-          <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-
-        {/* <button className="close-btn" onClick={contact}>
-          Contact
-        </button> */}
       </div>
     </div>
     )
