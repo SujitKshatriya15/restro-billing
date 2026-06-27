@@ -47,6 +47,21 @@ function Login(){
 
     return(
         <div className="modal-overlay">
+          <nav className="navbar">
+
+        <div className="nav-left">
+
+          <Menu
+            size={28}
+            className="menu-icon"
+          />
+
+          <h1>
+            Restro-billing
+          </h1>
+
+        </div>
+      </nav>
       <div className="food-modal login-modal">
         <h2>Login</h2>
 
