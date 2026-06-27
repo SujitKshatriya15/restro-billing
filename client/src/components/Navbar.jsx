@@ -22,6 +22,12 @@ function Navbar(){
 
         <button
           className="order-btn"
+          onClick={() => navigate("/manage-menu")}
+        >
+          Manage Menu
+        </button>
+        <button
+          className="order-btn"
           onClick={() => navigate("/records")}
         >
           Bills History
